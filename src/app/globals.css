@@ -1,0 +1,240 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --nav-h: 4rem;
+  }
+
+  html {
+    background-color: #0a0a0a;
+    color: #ffffff;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--nav-h);
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: #0a0a0a;
+    font-family: theme('fontFamily.sans');
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: #c9a84c;
+    color: #0a0a0a;
+  }
+
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 1px solid #c9a84c;
+    outline-offset: 4px;
+  }
+
+  input:focus-visible {
+    outline-offset: 0;
+  }
+
+  button {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* Hide number spinners and the iOS search decoration. */
+  input[type='email'] {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #ffffff;
+    -webkit-box-shadow: 0 0 0 1000px #141414 inset;
+    caret-color: #ffffff;
+    transition: background-color 9999s ease-out;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Bilingual pre-hydration rendering                                  */
+/*                                                                     */
+/*  The static HTML carries both languages for visible copy, wrapped   */
+/*  in <span data-l="tr|en">. A tiny script in <head> sets             */
+/*  html[data-lang] before first paint, so only the visitor's language */
+/*  is ever shown — no flash, no hydration mismatch. After hydration   */
+/*  React renders a single language and these spans disappear.         */
+/* ------------------------------------------------------------------ */
+
+html[data-lang='tr'] [data-l='en'],
+html[data-lang='en'] [data-l='tr'] {
+  display: none !important;
+}
+
+/* Active TR | EN option, driven by the same attribute. */
+html[data-lang='tr'] [data-lang-option='tr'],
+html[data-lang='en'] [data-lang-option='en'] {
+  color: #ffffff;
+}
+
+html[data-lang='tr'] [data-lang-option='tr'] [data-lang-line],
+html[data-lang='en'] [data-lang-option='en'] [data-lang-line] {
+  opacity: 1;
+}
+
+/* The floating concierge steps aside while a sheet or menu is open. */
+html[data-overlay] [data-floating-concierge] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Components                                                         */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .label {
+    font-size: 0.6875rem;
+    line-height: 1rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  .shell {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 84rem;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .shell {
+      padding-inline: 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .shell {
+      padding-inline: 3rem;
+    }
+  }
+
+  /* Sharp, bordered gallery button. Inverts on hover. */
+  .btn-outline {
+    position: relative;
+    display: inline-flex;
+    min-height: 3.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    padding-inline: 2.25rem;
+    font-size: 0.6875rem;
+    line-height: 1rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #ffffff;
+    transition:
+      background-color 600ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 600ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .btn-outline:hover {
+    background-color: #ffffff;
+    color: #0a0a0a;
+  }
+
+  .btn-solid {
+    display: inline-flex;
+    min-height: 3.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background-color: #ffffff;
+    padding-inline: 2rem;
+    font-size: 0.6875rem;
+    line-height: 1rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #0a0a0a;
+    transition:
+      background-color 500ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .btn-solid:hover {
+    background-color: #c9a84c;
+  }
+
+  .btn-solid[aria-disabled='true'],
+  .btn-solid:disabled {
+    cursor: not-allowed;
+    background-color: #222222;
+    color: #888888;
+  }
+
+  .link-quiet {
+    color: #888888;
+    text-decoration-line: underline;
+    text-decoration-color: #222222;
+    text-underline-offset: 0.35em;
+    transition:
+      color 400ms cubic-bezier(0.22, 1, 0.36, 1),
+      text-decoration-color 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .link-quiet:hover {
+    color: #ffffff;
+    text-decoration-color: #888888;
+  }
+}
+
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reduced motion                                                     */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
